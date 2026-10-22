@@ -81,8 +81,27 @@ const deleteTask=async(req,res)=>{
     }
 }
 
+const getTasks = async (req, res) => {
+  try {
+    const tasks = await task.find({
+      user: req.existing._id,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({ tasks });
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).json({
+      message: "Failed to fetch tasks",
+    });
+  }
+};
+
+
 module.exports={
     createTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    getTasks
 }
+
